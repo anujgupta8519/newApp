@@ -5,4 +5,8 @@
     <string name="hint_search">Type a word or spelling</string>
     <string name="btn_search">Search</string>
     <string name="btn_history">View Saved List</string>
+    <string name="spellmeaning_searching_for">Searching for "%1$s"...</string>
+    <string name="spellmeaning_no_definition">Could not find a definition for "%1$s" right now. Try a different word or check your connection.</string>
+    <string name="spellmeaning_toast_enter_word">Please type a word to search.</string>
+    <string name="spellmeaning_toast_saved">Definition saved.</string>
 </resources>

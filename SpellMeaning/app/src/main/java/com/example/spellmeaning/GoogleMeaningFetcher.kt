@@ -28,58 +28,54 @@ object GoogleMeaningFetcher {
         .readTimeout(10, TimeUnit.SECONDS)
         .build()
 
-    private const val USER_AGENT =
-        "Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 (KHTML, like Gecko) " +
-            "Chrome/120.0.0.0 Mobile Safari/537.36"
-
     suspend fun fetchMeaning(word: String): String? = withContext(Dispatchers.IO) {
         try {
-            val query = URLEncoder.encode("define $word", "UTF-8")
-            val url = "https://www.google.com/search?q=$query&hl=en"
+            val query = URLEncoder.encode(word, "UTF-8")
+            val url = "https://api.dictionaryapi.dev/api/v2/entries/en/$query"
 
             val request = Request.Builder()
                 .url(url)
-                .header("User-Agent", USER_AGENT)
-                .header("Accept-Language", "en-US,en;q=0.9")
+                .header("Accept", "application/json")
                 .build()
 
             client.newCall(request).execute().use { response ->
                 if (!response.isSuccessful) return@withContext null
-                val html = response.body?.string() ?: return@withContext null
-                parseDefinition(html)
+                val body = response.body?.string() ?: return@withContext null
+                parseDefinition(body)
             }
         } catch (e: Exception) {
             null
         }
     }
 
-    /**
-     * Tries a few known selectors Google has used for its dictionary snippet.
-     * Falls back through each one since Google changes markup periodically.
-     */
-    private fun parseDefinition(html: String): String? {
-        val doc = Jsoup.parse(html)
+    private fun parseDefinition(json: String): String? {
+        return try {
+            val root = org.json.JSONArray(json)
+            if (root.length() == 0) return null
 
-        // Historically-seen selector for the definition text in Google's word-meaning card
-        doc.select("div[data-dobid=dfn]").firstOrNull()?.text()?.let {
-            if (it.isNotBlank()) return cleanup(it)
+            val firstEntry = root.getJSONObject(0)
+            val meanings = firstEntry.optJSONArray("meanings") ?: return null
+
+            for (i in 0 until meanings.length()) {
+                val meaning = meanings.getJSONObject(i)
+                val definitions = meaning.optJSONArray("definitions") ?: continue
+                if (definitions.length() == 0) continue
+
+                val definitionObject = definitions.getJSONObject(0)
+                val definition = definitionObject.optString("definition").takeIf { it.isNotBlank() }
+                val example = definitionObject.optString("example").takeIf { it.isNotBlank() }
+
+                if (definition != null) {
+                    return if (example != null) {
+                        "$definition\n\nExample: $example"
+                    } else {
+                        definition
+                    }
+                }
+            }
+            null
+        } catch (e: Exception) {
+            null
         }
-
-        // Fallback: some layouts put the definition in a span near "noun"/"verb" labels
-        doc.select("span").firstOrNull { el ->
-            el.previousElementSibling()?.text()?.matches(Regex("(?i)noun|verb|adjective|adverb")) == true
-        }?.text()?.let {
-            if (it.isNotBlank()) return cleanup(it)
-        }
-
-        // Last resort: grab the first reasonably long text block on the results page,
-        // which is often the featured snippet.
-        doc.select("div.BNeawe.s3v9rd.AP7Wnd").firstOrNull()?.text()?.let {
-            if (it.length > 15) return cleanup(it)
-        }
-
-        return null
     }
-
-    private fun cleanup(text: String) = text.trim().replace(Regex("\\s+"), " ")
 }

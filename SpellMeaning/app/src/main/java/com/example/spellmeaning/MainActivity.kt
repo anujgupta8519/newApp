@@ -27,29 +27,29 @@ class MainActivity : AppCompatActivity() {
     private fun doSearch() {
         val word = binding.editWord.text.toString().trim()
         if (word.isEmpty()) {
-            Toast.makeText(this, "Type a word first", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.spellmeaning_toast_enter_word), Toast.LENGTH_SHORT).show()
             return
         }
 
         setLoading(true)
-        binding.textResult.text = ""
+        binding.textResult.text = getString(R.string.spellmeaning_searching_for, word)
+        binding.textResult.alpha = 0f
 
         lifecycleScope.launch {
             val meaning = GoogleMeaningFetcher.fetchMeaning(word)
             setLoading(false)
 
             if (meaning.isNullOrBlank()) {
-                binding.textResult.text =
-                    "Couldn't find a definition for \"$word\" right now. " +
-                    "Google may not have shown a dictionary result, or blocked the request. Try again shortly."
+                binding.textResult.text = getString(R.string.spellmeaning_no_definition, word)
+                binding.textResult.animate().alpha(1f).setDuration(300).start()
                 return@launch
             }
 
             binding.textResult.text = meaning
+            binding.textResult.animate().alpha(1f).setDuration(300).start()
 
-            // Auto-save: every successful search is stored immediately, no extra tap needed
             StorageHelper.saveEntry(this@MainActivity, WordEntry(word, meaning))
-            Toast.makeText(this@MainActivity, "Saved to your list", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@MainActivity, getString(R.string.spellmeaning_toast_saved), Toast.LENGTH_SHORT).show()
         }
     }
 
