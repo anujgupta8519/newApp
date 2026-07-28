@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Spell Meaning</string>
+    <string name="history_title">Saved Words</string>
+    <string name="detail_title">Word Detail</string>
+    <string name="hint_search">Type a word or spelling</string>
+    <string name="btn_search">Search</string>
+    <string name="btn_history">View Saved List</string>
+</resources>
