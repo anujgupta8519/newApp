@@ -4,6 +4,7 @@ color ic_launcher_background
 drawable ic_launcher_foreground
 id btnDelete
 id btnHistory
+id btnOpenBrowser
 id btnSearch
 id editWord
 id progressBar
@@ -21,8 +22,11 @@ layout item_word
 mipmap ic_launcher
 mipmap ic_launcher_round
 string app_name
+string btn_delete_entry
 string btn_history
 string btn_search
+string btn_view_google
+string detail_no_meaning
 string detail_title
 string hint_search
 string history_title

@@ -9,4 +9,7 @@
     <string name="spellmeaning_no_definition">Could not find a definition for "%1$s" right now. Try a different word or check your connection.</string>
     <string name="spellmeaning_toast_enter_word">Please type a word to search.</string>
     <string name="spellmeaning_toast_saved">Definition saved.</string>
+    <string name="detail_no_meaning">No detailed definition is available for this entry.</string>
+    <string name="btn_view_google">View in Google</string>
+    <string name="btn_delete_entry">Delete this entry</string>
 </resources>

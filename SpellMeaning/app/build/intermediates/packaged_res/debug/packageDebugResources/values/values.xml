@@ -2,8 +2,11 @@
 <resources>
     <color name="ic_launcher_background">#1A73E8</color>
     <string name="app_name">Spell Meaning</string>
+    <string name="btn_delete_entry">Delete this entry</string>
     <string name="btn_history">View Saved List</string>
     <string name="btn_search">Search</string>
+    <string name="btn_view_google">View in Google</string>
+    <string name="detail_no_meaning">No detailed definition is available for this entry.</string>
     <string name="detail_title">Word Detail</string>
     <string name="hint_search">Type a word or spelling</string>
     <string name="history_title">Saved Words</string>

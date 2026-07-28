@@ -3176,6 +3176,7 @@ id bounceEnd
 id bounceStart
 id btnDelete
 id btnHistory
+id btnOpenBrowser
 id btnSearch
 id buttonPanel
 id cache_measures
@@ -3822,8 +3823,10 @@ string bottomsheet_action_expand
 string bottomsheet_action_expand_halfway
 string bottomsheet_drag_handle_clicked
 string bottomsheet_drag_handle_content_description
+string btn_delete_entry
 string btn_history
 string btn_search
+string btn_view_google
 string call_notification_answer_action
 string call_notification_answer_video_action
 string call_notification_decline_action
@@ -3835,6 +3838,7 @@ string character_counter_content_description
 string character_counter_overflowed_content_description
 string character_counter_pattern
 string clear_text_end_icon_content_description
+string detail_no_meaning
 string detail_title
 string error_a11y_label
 string error_icon_content_description

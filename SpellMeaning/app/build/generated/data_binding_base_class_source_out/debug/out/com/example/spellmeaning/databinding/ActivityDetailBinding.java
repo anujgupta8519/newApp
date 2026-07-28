@@ -24,6 +24,9 @@ public final class ActivityDetailBinding implements ViewBinding {
   public final Button btnDelete;
 
   @NonNull
+  public final Button btnOpenBrowser;
+
+  @NonNull
   public final TextView textDate;
 
   @NonNull
@@ -33,9 +36,11 @@ public final class ActivityDetailBinding implements ViewBinding {
   public final TextView textWord;
 
   private ActivityDetailBinding(@NonNull LinearLayout rootView, @NonNull Button btnDelete,
-      @NonNull TextView textDate, @NonNull TextView textMeaning, @NonNull TextView textWord) {
+      @NonNull Button btnOpenBrowser, @NonNull TextView textDate, @NonNull TextView textMeaning,
+      @NonNull TextView textWord) {
     this.rootView = rootView;
     this.btnDelete = btnDelete;
+    this.btnOpenBrowser = btnOpenBrowser;
     this.textDate = textDate;
     this.textMeaning = textMeaning;
     this.textWord = textWord;
@@ -74,6 +79,12 @@ public final class ActivityDetailBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.btnOpenBrowser;
+      Button btnOpenBrowser = ViewBindings.findChildViewById(rootView, id);
+      if (btnOpenBrowser == null) {
+        break missingId;
+      }
+
       id = R.id.textDate;
       TextView textDate = ViewBindings.findChildViewById(rootView, id);
       if (textDate == null) {
@@ -92,8 +103,8 @@ public final class ActivityDetailBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ActivityDetailBinding((LinearLayout) rootView, btnDelete, textDate, textMeaning,
-          textWord);
+      return new ActivityDetailBinding((LinearLayout) rootView, btnDelete, btnOpenBrowser, textDate,
+          textMeaning, textWord);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

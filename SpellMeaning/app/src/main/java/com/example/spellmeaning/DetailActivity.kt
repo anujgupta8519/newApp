@@ -21,9 +21,18 @@ class DetailActivity : AppCompatActivity() {
         val timestamp = intent.getLongExtra("timestamp", System.currentTimeMillis())
 
         binding.textWord.text = word
-        binding.textMeaning.text = meaning
+        binding.textMeaning.text = meaning.ifBlank { getString(R.string.detail_no_meaning) }
         binding.textDate.text = SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault())
             .format(Date(timestamp))
+
+        binding.btnOpenBrowser.setOnClickListener {
+            val query = java.net.URLEncoder.encode("define $word", "UTF-8")
+            val url = "https://www.google.com/search?q=$query"
+            val intent = android.content.Intent(android.content.Intent.ACTION_VIEW).apply {
+                data = android.net.Uri.parse(url)
+            }
+            startActivity(intent)
+        }
 
         binding.btnDelete.setOnClickListener {
             StorageHelper.deleteEntry(this, word)
